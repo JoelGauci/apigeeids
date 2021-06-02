@@ -31,7 +31,7 @@ func (f *FeodoTrackerRuler) GetRules() error {
 	sc := r.StatusCode
 	if sc/100 != 2 {
 		fmt.Printf("Error reaching (url=%s, status code=%v)\n", f_url, sc)
-		return err
+		return fmt.Errorf("Error - apigeeids: status code %v when requesting Url=%s", sc, f_url)
 	}
 
 	scanner := bufio.NewScanner(r.Body)

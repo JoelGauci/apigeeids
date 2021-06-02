@@ -12,12 +12,13 @@ import (
 // URL of feodo tracker
 const feodotracker_url string = "https://feodotracker.abuse.ch/downloads/feodotracker.rules"
 const feodotracker_desc string = "FeodoTracker rules"
+const feodotracker_file string = "feodotracker.rules"
 
 func main() {
 
 	// create a file for writing rules into it
 	// include date and time in the file
-	file, err := os.Create("feodotracker.rules")
+	file, err := os.Create(feodotracker_file)
 	defer file.Close()
 
 	if err != nil {
@@ -36,7 +37,11 @@ func main() {
 		os.Exit(1)
 	}
 	// get ip addresses/rules/... from a source of trust
-	r.GetRules()
+	err = r.GetRules()
+	if err != nil {
+		fmt.Printf("Error when getting rules (err=%v)", err)
+		os.Exit(1)
+	}
 	// mediate ip addresses/rules into snort compliant rules
 	r.SetRules()
 	// write rules into a target file (.rules extension)
